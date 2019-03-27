@@ -9,5 +9,6 @@ namespace VypocetTepelnychStratApp
     interface IMaterialsRepository
     {
         List<Material> GetMaterials();
+        Material CreateMaterial(string name, double thickness);
     }
 }

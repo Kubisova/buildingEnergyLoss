@@ -6,17 +6,34 @@ using System.Threading.Tasks;
 
 namespace VypocetTepelnychStratApp
 {
-    class MaterialsRepository : IMaterialsRepository
+    public class MaterialsRepository : IMaterialsRepository
     {
+        private List<Material> _materials = new List<Material>()
+            {
+                new Material("betón", 1.3),
+                new Material("omietka", 0.15),
+                new Material("sadrokartón", 0.22),
+                new Material("ytong", 0.09)
+            };
+
         public List<Material> GetMaterials()
         {
-            List<Material> materials = new List<Material>();
-            materials.Add(new Material("betón", 1.3));
-            materials.Add(new Material("omietka", 0.15));
-            materials.Add(new Material("sadrokartón", 0.22));
-            materials.Add(new Material("ytong", 0.9));
+            return _materials;
+        }
 
-            return materials;
+        public Material CreateMaterial(string name, double thickness )
+        {
+            Material material = null;
+            foreach (var mat in _materials)
+            {
+                if( name == mat.Name)
+                {
+                    material = new Material(mat.Name, mat.Lambda, thickness);
+                    break;
+                }
+                
+            }
+            return material;
         }
     }
 }

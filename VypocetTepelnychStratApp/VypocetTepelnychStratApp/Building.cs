@@ -16,11 +16,13 @@ namespace VypocetTepelnychStratApp
         public int InnerTemperature { get; set; }
         public const int OuterTemperatureForFloor = 3;
 
-        public Building(Floor floor, Walls walls, Roof roof)
+        public Building(Floor floor, Walls walls, Roof roof, int minOuterTemp, int innerTemp)
         {
             Floor = floor;
             Walls = walls;
             Roof = roof;
+            MinOuterTemperature = minOuterTemp;
+            InnerTemperature = innerTemp;
         }
     }
 }

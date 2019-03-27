@@ -8,14 +8,13 @@ namespace VypocetTepelnychStratApp
 {
     class Calculator
     {
-        int _deltaT;
-        int _deltaTForFloor;
+        private Building _building; 
+        
 
         public double CalculateLosses(Building building)
         {
-            _deltaT = CalculateDeltaT(building);
-            _deltaTForFloor = CalculateDeltaTForFloor(building);
-            double lossFloor = CalculateLossForSurface(building.Floor);
+            _building = building;
+            double lossFloor = CalculateLossForFloor(building.Floor);
             double lossWalls = CalculateLossForSurface(building.Walls);
             double lossRoof = CalculateLossForSurface(building.Roof);
             double loss = lossFloor + lossRoof + 4 * lossWalls;
@@ -24,15 +23,17 @@ namespace VypocetTepelnychStratApp
 
         public double CalculateLossForSurface(Surface surface)
         {
+            int deltaT = _building.InnerTemperature - _building.MinOuterTemperature;
             double u = CalculateUForSandwichConstruction(surface);
-            double surfaceLoss = u * surface.Area() *_deltaT;
+            double surfaceLoss = u * surface.Area() * deltaT;
             return surfaceLoss;
         }
 
         public double CalculateLossForFloor(Floor floor)
         {
+            int deltaTForFloor = _building.InnerTemperature - Building.OuterTemperatureForFloor;
             double u = CalculateUForSandwichConstruction(floor);
-            double floorLoss = u * floor.Area() * _deltaTForFloor;
+            double floorLoss = u * floor.Area() * deltaTForFloor;
             return floorLoss;
         }
 
@@ -41,20 +42,12 @@ namespace VypocetTepelnychStratApp
             double r = 0;
             for (int i = 0; i < surface.SandwichConstruction.Count; i++)
             {
-                r += surface.SandwichConstruction[i].Size / surface.SandwichConstruction[i].Lambda;
+                r += surface.SandwichConstruction[i].Thickness / surface.SandwichConstruction[i].Lambda;
             }
             double u = 1 / r;
             return u;
         }
 
-        public int CalculateDeltaT(Building building)
-        {
-            return building.InnerTemperature - building.MinOuterTemperature;
-        }
 
-        public int CalculateDeltaTForFloor(Building building)
-        {
-            return building.InnerTemperature - Building.OuterTemperatureForFloor;
-        }
     }
 }
